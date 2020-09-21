@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     {
         String currentUserID = mAuth.getCurrentUser().getUid();
 
-        RootRef.child(currentUserID).child(currentUserID).addValueEventListener(new ValueEventListener() {
+        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {

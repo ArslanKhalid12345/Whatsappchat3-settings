@@ -37,8 +37,6 @@ public class SettingsActivity extends AppCompatActivity {
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
-    private StorageReference UserProfileImagesRef;
-    private ProgressDialog loadingBar;
 
     //14 tutorial
     @Override
@@ -46,9 +44,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
-        RootRef = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance(); //1
+        currentUserID = mAuth.getCurrentUser().getUid(); //2
+        RootRef = FirebaseDatabase.getInstance().getReference(); //3
 
         InitializeFields();
 
@@ -67,9 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
         userName = (EditText) findViewById(R.id.set_user_name);
         userStatus = (EditText) findViewById(R.id.set_profile_status);
         userProfileImage = (CircleImageView) findViewById(R.id.set_profile_image);
-        loadingBar = new ProgressDialog(this);
-    }
-
+     }
 
     private void UpdateSettings() {
         String setUserName = userName.getText().toString();
@@ -86,7 +82,8 @@ public class SettingsActivity extends AppCompatActivity {
             profileMap.put("name", setUserName);
             profileMap.put("status", setStatus);
 
-            RootRef.child("Users").child(currentUserID).updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            RootRef.child("Users").child(currentUserID).setValue(profileMap)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
